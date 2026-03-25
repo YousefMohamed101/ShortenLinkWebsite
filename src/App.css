@@ -8,19 +8,20 @@ h1{
   transform: translate(-50%, -50%);
 }
 
-button:hover{
+.MainButton:hover{
   cursor: pointer;
   transform: translate(-50%, -50%) scale(1.03); /* */
 }
 
 .MainButton{
+  padding: 12px;
+  border-radius: 12px;
   border: none;
-  border-radius: 15px;
-  padding: 16px;
-  background-color: #FFFFFF;
-  box-shadow-color: aqua;
-  box-shadow: -0px 0 69px 10px darkmagenta;
-
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 0 35px 2px darkmagenta ;
+  background: white;
+  color: #0b0f19;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   position: absolute;
