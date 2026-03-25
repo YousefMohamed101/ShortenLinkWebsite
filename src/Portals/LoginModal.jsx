@@ -1,12 +1,35 @@
-import { useState } from 'react'
-import {createPortal} from "react-dom";
-import {createRoot} from "react-dom/client";
+import {useContext, useState} from 'react'
 import './LoginModalcss.css'
+import {AuthedContext} from "../AuthenticatorGlobal.jsx";
 
 function LoginModal({onClose,onSwap}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    const {user,login} = useContext(AuthedContext);
+
+    const LoginUser = async (e) => {
+        e.preventDefault();
+        if (username === '' || password === '') {
+            alert('Please enter the missing field');
+            return;
+        }
+
+
+
+        const response = await fetch(`http://localhost:5000/server/login/${username}/${password}`);
+
+        const data = await response.json();
+        console.log(data);
+        if(response.status === 200) {
+            login({username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});
+            onClose();
+            console.log(user);
+        }
+        console.log(data);
+        alert(data.error)
+
+    }
     return (
 
        <div className="Container">
@@ -31,7 +54,7 @@ function LoginModal({onClose,onSwap}) {
 
            <div className="formButtons">
 
-               <button className="btn-login">login</button>
+               <button className="btn-login" onClick={LoginUser}>login</button>
                <button className="btn-login" onClick={onSwap}>Register</button>
                <button className="btn-quit" onClick={onClose}>quit</button>
            </div>

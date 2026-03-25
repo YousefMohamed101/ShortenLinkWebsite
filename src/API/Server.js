@@ -28,9 +28,45 @@ app.post('/server/RegisterUser', (req, res) => {
         query.run(username, email, password,new Date().toISOString());
         res.status(200).json({ message: "User registered successfully!" });
     }catch(err){
+
         console.error("Database error:", err);
+        if (err.message.includes('Users.username')) {
+            return res.status(409).json({ error: "That username is already taken. Please choose another." });
+        }
+
+
+        if (err.message.includes('Users.email')) {
+            return res.status(409).json({ error: "An account with that email already exists." });
+        }
         res.status(500).json({ error: "Failed to register user." });
     }
+
+})
+
+app.get('/server/login/:username/:password', (req, res) => {
+
+    const username = req.params.username;
+    const password = req.params.password;
+    const query = db.prepare('SELECT * FROM Users WHERE username = ? AND password = ?');
+    if(username.toLowerCase().includes('@')){
+        query = db.prepare('SELECT * FROM Users WHERE email = ? AND password = ?');
+    }
+    const user =query.get(username,password);
+    try{
+    if(!user){
+        res.status(401).json({ error: "Invalid username or password." });
+
+    }
+    res.status(200).json({
+        message: "Login successful!",
+        user: user
+    });
+
+} catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ error: "An error occurred during login." });
+}
+
 
 })
 

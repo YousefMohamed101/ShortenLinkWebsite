@@ -24,6 +24,9 @@ function RegisterModal({onClose,onSwap}) {
 
         const data = await response.json();
         console.log(data);
+        if(response.status === 500 || response.status === 401) {
+            alert(data.error)
+        }
 
     }
 
