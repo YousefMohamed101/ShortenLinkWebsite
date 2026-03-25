@@ -1,11 +1,10 @@
-import { createContext, useState } from 'react';
+import {useState} from 'react';
+import {AuthedContext as AuthedContext1} from "./AuthedContext.jsx";
 
-
-export const AuthedContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [UserData, setUserData] = useState({username: "", email: "",joinedat: ""});
+    const [UserData, setUserData] = useState({id: null,username: "", email: "",joinedat: ""});
 
     const login = (userData)=>{
         setLoggedIn(true);
@@ -17,9 +16,9 @@ export const AuthProvider = ({ children }) => {
         setUserData({});
     }
     return (
-        <AuthedContext.Provider value={{ UserData,loggedIn, login, logout }}>
+        <AuthedContext1 value={{ UserData,loggedIn, login, logout }}>
             {children}
-        </AuthedContext.Provider>
+        </AuthedContext1>
     )
 
 }

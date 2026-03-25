@@ -3,6 +3,7 @@ import cors from 'cors'
 import Database from 'better-sqlite3'
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Generateshort from "../Scripts/UrlEncoder.js";
 
 // Get the directory name of the current file (Server.js)
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +48,7 @@ app.get('/server/login/:username/:password', (req, res) => {
 
     const username = req.params.username;
     const password = req.params.password;
-    const query = db.prepare('SELECT * FROM Users WHERE username = ? AND password = ?');
+    let query = db.prepare('SELECT * FROM Users WHERE username = ? AND password = ?');
     if(username.toLowerCase().includes('@')){
         query = db.prepare('SELECT * FROM Users WHERE email = ? AND password = ?');
     }
@@ -70,4 +71,51 @@ app.get('/server/login/:username/:password', (req, res) => {
 
 })
 
+app.post('/server/RegisterLink', (req, res) => {
+    const { id,Url} = req.body;
+
+    const query = db.prepare('INSERT INTO Links (user_id, link_name, ShortenCode, Url, created_at) VALUES (?,?,?,?,?)');
+
+    try{
+    const info =query.run(id,"",Url,Url,new Date().toISOString());
+
+    const shortlink = Generateshort(info.lastInsertRowid);
+
+   db.prepare('UPDATE Links SET ShortenCode = ? WHERE id = ?').run(shortlink,info.lastInsertRowid);
+    const link =db.prepare('SELECT * FROM Links WHERE id =?').get(info.lastInsertRowid);
+    res.status(200).json({message:"successfully added link",link:link});
+    }catch (err){
+        console.error("Database error:", err);
+        res.status(500).json({ error: "An error occurred during register." });
+    }
+
+
+})
+
+app.get('/:shortcode', (req, res) => {
+    const { shortcode } = req.params;
+
+    const query = db.prepare('SELECT Url FROM Links WHERE ShortenCode = ?').get(shortcode);
+
+
+
+    if(query){
+        return res.redirect(String(query.Url));
+    }else {
+        // 3. Not found
+        return res.status(404).send("<h1>404: Link not found</h1>");
+    }
+
+})
+
+app.get('/server/GetLinks/:UserId', (req, res) => {
+    const { UserId } = req.params;
+
+        const query = db.prepare(`SELECT * FROM Links WHERE user_id=?`).all(UserId);
+    if(query){
+        return res.json(query);
+    }else{
+        return res.status(404).send("<h1>404: Link not found</h1>");
+    }
+})
 app.listen(5000);

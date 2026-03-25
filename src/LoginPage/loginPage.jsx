@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import { createPortal } from 'react-dom';
-import './App.css'
-import SignPortal from "./Portals/SignPortal.jsx";
+import '../App.css'
+import SignPortal from "../Portals/SignPortal.jsx";
 
 function LoginPage() {
     const [showModal, setShowModal] = useState(false)

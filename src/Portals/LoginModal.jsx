@@ -1,12 +1,13 @@
 import {useContext, useState} from 'react'
 import './LoginModalcss.css'
-import {AuthedContext} from "../AuthenticatorGlobal.jsx";
+
+import {AuthedContext} from "../AuthedContext.jsx";
 
 function LoginModal({onClose,onSwap}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const {user,login} = useContext(AuthedContext);
+    const {login} = useContext(AuthedContext);
 
     const LoginUser = async (e) => {
         e.preventDefault();
@@ -20,11 +21,9 @@ function LoginModal({onClose,onSwap}) {
         const response = await fetch(`http://localhost:5000/server/login/${username}/${password}`);
 
         const data = await response.json();
-        console.log(data);
         if(response.status === 200) {
-            login({username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});
+            login({id: data.user.id,username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});
             onClose();
-            console.log(user);
         }
         console.log(data);
         alert(data.error)

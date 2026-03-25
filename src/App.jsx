@@ -1,8 +1,8 @@
 import {useContext} from 'react'
 import './App.css'
-import {AuthedContext} from "./AuthenticatorGlobal.jsx";
-import LoginPage from "./loginPage.jsx";
-import UserPage from "./UserPage.jsx";
+import LoginPage from "./LoginPage/loginPage.jsx";
+import UserPage from "./UserPage/UserPage.jsx";
+import {AuthedContext} from "./AuthedContext.jsx";
 
 function App() {
 
