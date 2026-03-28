@@ -3,7 +3,7 @@ import "./LinkDataCss.css"
 import {useEffect, useState} from "react";
 import clipIcon from "../assets/copy.png"
 
-function ShowLinkData({onClose,link_data}) {
+function ShowLinkData({onClose,link_data,link_array}) {
 
     const [linkStats, setLinkStats] = useState([{}]);
     useEffect(() => {
@@ -21,6 +21,13 @@ function ShowLinkData({onClose,link_data}) {
         console.log("CopyToClipboard");
         navigator.clipboard.writeText(`http://localhost:5000/${link_data.ShortenCode}`);
 
+    }
+
+    const DeleteUrl = async () => {
+
+        await fetch(`http://localhost:5000/server/Deletelink/${link_data.id}`,{method:"DELETE"});
+        link_array(prevlinks => prevlinks.filter(link=>link.id !== link_data.id));
+        onClose();
     }
 
     const user_agent_chart ={
@@ -90,7 +97,7 @@ function ShowLinkData({onClose,link_data}) {
             }
         ]
     };
-    const refferrer_chart ={
+    const referer_chart ={
         series: [
             {
                 type: "pie",
@@ -117,11 +124,10 @@ function ShowLinkData({onClose,link_data}) {
                     <label>Total click counts: {linkStats.at(0).total}</label>
                     <EChartsReact option={user_agent_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
                     <EChartsReact option={activity_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
-                    <EChartsReact option={refferrer_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
+                    <EChartsReact option={referer_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
                     <EChartsReact option={country_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
-
-
                 </div>
+                <button className="deletButton" onClick={DeleteUrl}>Delete link</button>
 
             </div>
         </>

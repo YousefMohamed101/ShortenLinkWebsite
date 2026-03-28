@@ -39,3 +39,6 @@ img:hover{
     height: 350px;
     width: 100%
 }
+.deletButton{
+    background-color: red;
+}

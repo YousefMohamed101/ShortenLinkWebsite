@@ -152,5 +152,21 @@ app.get('/server/GetLinkAnalysis/:LinkId', (req, res) => {
 
 })
 
+app.delete('/server/Deletelink/:LinkId', (req, res) => {
+    const {LinkId} =req.params;
+
+    try{
+        db.prepare(`DELETE FROM ClickAnalytics WHERE link_id=?`).run(LinkId);
+        db.prepare(`DELETE FROM Links WHERE id=?`).run(LinkId);
+        return res.status(200).send("deleted successfully")
+    }catch (err){
+        console.log("Database error:", err);
+        res.status(404).send("not found");
+    }
+
+
+
+})
+
 
 app.listen(5000);

@@ -47,7 +47,7 @@ function UserPage() {
                 <h1>You are Logged in HI {UserData?.username}</h1>
                     <button className="SubmitButton" onClick={()=>setSaveUrl(true)}>Shorten link</button>
                 <div className="LinksContainer">
-                    {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} link_data={selectedLink}/>)}
+                    {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} link_data={selectedLink} link_array={setLinksData}/>)}
 
                     {!viewLinkData &&(
                         <li>
