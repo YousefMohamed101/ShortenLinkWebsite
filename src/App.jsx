@@ -1,21 +1,18 @@
-import { useState } from 'react'
-
+import {useContext} from 'react'
 import './App.css'
+import LoginPage from "./LoginPage/loginPage.jsx";
+import UserPage from "./UserPage/UserPage.jsx";
+import {AuthedContext} from "./AuthedContext.jsx";
 
 function App() {
 
+  const{loggedIn} = useContext(AuthedContext);
+
   return (
     <>
+      {!loggedIn &&(<LoginPage />)}
+      {loggedIn &&(<UserPage />)}
 
-    <div>
-      <center>
-        <h1>Welcome to shorten link</h1>
-      </center>
-      <center>
-      <button className='MainButton' onClick={()=>console.log("Button clicked")}>Login/Register</button>
-      </center>
-
-      </div>
     </>
   )
 }

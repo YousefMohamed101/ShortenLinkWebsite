@@ -1,0 +1,44 @@
+
+.linkDataContainer{
+    width: 98%;
+    justify-content: center;
+    margin-top: 1%;
+    border-radius: 15px;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+
+}
+
+.linkDataButton{
+    width: 100%;
+    background-color: rgba(50, 45, 75, 1);
+
+}
+
+.dataContainer{
+    width: 95%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    justify-items: center;
+}
+
+img:hover{
+    cursor: pointer;
+}
+
+.shortenLinkContainer{
+    display: flex;
+    width: 100%;
+}
+
+.Chart{
+    height: 350px;
+    width: 100%
+}
+.deletButton{
+    background-color: red;
+}

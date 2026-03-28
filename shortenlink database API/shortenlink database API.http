@@ -1,6 +1,0 @@
-@shortenlink_database_API_HostAddress = http://localhost:5144
-
-GET {{shortenlink_database_API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
