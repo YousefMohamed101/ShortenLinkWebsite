@@ -72,12 +72,12 @@ app.get('/server/login/:username/:password', (req, res) => {
 })
 
 app.post('/server/RegisterLink', (req, res) => {
-    const { id,Url} = req.body;
+    const { id,Name,Url} = req.body;
 
     const query = db.prepare('INSERT INTO Links (user_id, link_name, ShortenCode, Url, created_at) VALUES (?,?,?,?,?)');
 
     try{
-    const info =query.run(id,"",Url,Url,new Date().toISOString());
+    const info =query.run(id,Name,Url,Url,new Date().toISOString());
 
     const shortlink = Generateshort(info.lastInsertRowid);
 
@@ -92,14 +92,23 @@ app.post('/server/RegisterLink', (req, res) => {
 
 })
 
-app.get('/:shortcode', (req, res) => {
+app.get('/:shortcode', async (req, res) => {
     const { shortcode } = req.params;
 
-    const query = db.prepare('SELECT Url FROM Links WHERE ShortenCode = ?').get(shortcode);
+    const user_ip = req.headers['x-forwarded-for'] || req.ipv4;
+    const user_agent = req.get('User-Agent');
+    const referrer = req.get("Referrer") || 'Direct';
 
+
+    const query = db.prepare('SELECT * FROM Links WHERE ShortenCode = ?').get(shortcode);
+    console.log(query);
+    const analyse = db.prepare('INSERT INTO ClickAnalytics (link_id, ip_address, country_code, user_agent, origin, clicked_at) VALUES (?,?,?,?,?,?)');
 
 
     if(query){
+
+        analyse.run(query.id,user_ip,"eg",user_agent,referrer,new Date().toISOString().split('T')[0]);
+
         return res.redirect(String(query.Url));
     }else {
         // 3. Not found

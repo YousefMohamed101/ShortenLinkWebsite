@@ -25,8 +25,7 @@ function LoginModal({onClose,onSwap}) {
             login({id: data.user.id,username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});
             onClose();
         }
-        console.log(data);
-        alert(data.error)
+
 
     }
     return (

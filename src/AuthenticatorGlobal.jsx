@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setLoggedIn(false);
-        setUserData({});
+        setUserData(undefined);
     }
     return (
         <AuthedContext1 value={{ UserData,loggedIn, login, logout }}>
