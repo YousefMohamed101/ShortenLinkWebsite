@@ -11,7 +11,7 @@ function UserPage() {
     const [LinksData, setLinksData] = useState([{}]);
     const [saveUrl, setSaveUrl] = useState(false);
     const [viewLinkData, setViewLinkData] = useState(false);
-
+    const [selectedLink, setSelectedLink] = useState(null);
 
 
     const SignOut = () => {
@@ -32,8 +32,11 @@ function UserPage() {
         },
         [UserData?.id])
 
-    const VisitLink = (siteCode) => {
-        window.open(`http://localhost:5000/${siteCode}`);
+
+    const ShowLink = (linkData) => {
+        console.log(linkData);
+        setSelectedLink(linkData);
+        setViewLinkData(true);
     }
 
 
@@ -44,11 +47,11 @@ function UserPage() {
                 <h1>You are Logged in HI {UserData?.username}</h1>
                     <button className="SubmitButton" onClick={()=>setSaveUrl(true)}>Shorten link</button>
                 <div className="LinksContainer">
-                    {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} />)}
+                    {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} link_data={selectedLink}/>)}
 
                     {!viewLinkData &&(
                         <li>
-                        {LinksData.map(link => <button className="LinkButton" key={link.id} onClick={()=>setViewLinkData(true)} >{link.link_name}</button>)}
+                        {LinksData.map(link => <button className="LinkButton" key={link.id} onClick={()=>ShowLink(link)} >{link.link_name}</button>)}
                     </li>)}
 
 

@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Generateshort from "../Scripts/UrlEncoder.js";
 
+
 // Get the directory name of the current file (Server.js)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +16,7 @@ const db = Database(dbPath);
 console.log("Connecting to database at:", dbPath);
 app.use(cors());
 app.use(express.json());
-
+app.set('trust proxy', true);
 app.post('/server/RegisterUser', (req, res) => {
     const { username,email, password } = req.body;
 
@@ -95,8 +96,8 @@ app.post('/server/RegisterLink', (req, res) => {
 app.get('/:shortcode', async (req, res) => {
     const { shortcode } = req.params;
 
-    const user_ip = req.headers['x-forwarded-for'] || req.ipv4;
-    const user_agent = req.get('User-Agent');
+    const user_ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const user_agent = req.useragent?.browser || `unknown`;
     const referrer = req.get("Referrer") || 'Direct';
 
 
@@ -112,7 +113,7 @@ app.get('/:shortcode', async (req, res) => {
         return res.redirect(String(query.Url));
     }else {
         // 3. Not found
-        return res.status(404).send("<h1>404: Link not found</h1>");
+        return res.status(404).send("404: Link not found");
     }
 
 })
@@ -127,4 +128,26 @@ app.get('/server/GetLinks/:UserId', (req, res) => {
         return res.status(404).send("<h1>404: Link not found</h1>");
     }
 })
+
+app.get('/server/GetLinkAnalysis/:LinkId', (req, res) => {
+
+    const { LinkId } = req.params;
+    try{
+        const total_clicks = db.prepare(`SELECT COUNT(*) AS total FROM ClickAnalytics WHERE link_id=?`).get(LinkId) ;
+
+            const referrer_info = db.prepare(`SELECT COUNT(user_agent) ,user_agent AS total_agent FROM ClickAnalytics WHERE link_id=? GROUP BY user_agent`).all(LinkId)
+
+        return res.json([total_clicks,referrer_info]);
+
+    }catch (err){
+        console.error("Database error:", err);
+        res.status(404).send("not found");
+
+    }
+
+
+
+})
+
+
 app.listen(5000);
