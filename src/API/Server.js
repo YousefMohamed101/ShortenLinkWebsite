@@ -135,9 +135,12 @@ app.get('/server/GetLinkAnalysis/:LinkId', (req, res) => {
     try{
         const total_clicks = db.prepare(`SELECT COUNT(*) AS total FROM ClickAnalytics WHERE link_id=?`).get(LinkId) ;
 
-            const referrer_info = db.prepare(`SELECT COUNT(user_agent) ,user_agent AS total_agent FROM ClickAnalytics WHERE link_id=? GROUP BY user_agent`).all(LinkId)
+        const agent_info = db.prepare(`SELECT user_agent, COUNT(user_agent)  AS total_agent FROM ClickAnalytics WHERE link_id=? GROUP BY user_agent`).all(LinkId)
+        const referrer_info = db.prepare(`SELECT origin, COUNT(origin)  AS total_referrer FROM ClickAnalytics WHERE link_id=? GROUP BY origin`).all(LinkId)
+        const country_info = db.prepare(`SELECT country_code, COUNT(country_code)  AS total_country FROM ClickAnalytics WHERE link_id=? GROUP BY origin`).all(LinkId)
+        const activity_info = db.prepare(`SELECT clicked_at, COUNT(clicked_at)  AS total_click FROM ClickAnalytics WHERE link_id=? GROUP BY clicked_at`).all(LinkId)
 
-        return res.json([total_clicks,referrer_info]);
+        return res.json([total_clicks,agent_info,referrer_info,country_info,activity_info]);
 
     }catch (err){
         console.error("Database error:", err);
