@@ -2,7 +2,7 @@ name = "my-cv-api"
 main = "src/API/SupabaseAdapter.js"
 compatibility_date = "2024-09-23"
 node_compat = true
-
+workers_dev = true
 [[rules]]
 type = "Data"
 globs = ["**/*.png"]
