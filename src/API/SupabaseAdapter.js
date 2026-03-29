@@ -72,11 +72,11 @@ app.get('/server/GetLinks/:UserId', async (c) => {
 })
 
 app.delete('/server/Deletelink/:LinkId',async (c) => {
-    const LinkId =c.req.params;
+    const LinkId =c.req.param('LinkId');
     const supabase = getSupabase(c.env);
 
     try{
-         await supabase.from('Links').delete().eq("id", LinkId);
+        const {data}= await supabase.from('Links').delete().eq("id", LinkId);
         return c.json("deleted successfully",200)
     }catch (err){
         console.log("Database error:", err);

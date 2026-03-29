@@ -17,7 +17,7 @@ function LoginModal({onClose,onSwap}) {
             return;
         }
 
-        const response = await fetch(`http://localhost:8787/server/login/${username}/${password}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/server/login/${username}/${password}`);
 
         const data = await response.json();
         console.log(data);

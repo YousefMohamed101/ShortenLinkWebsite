@@ -20,7 +20,7 @@ function RegisterModal({onClose,onSwap}) {
 
 
 
-        const response = await fetch('http://localhost:5000/server/RegisterUser',{
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterUser`,{
             method:'POST',
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({username: username, email: email, password: password})

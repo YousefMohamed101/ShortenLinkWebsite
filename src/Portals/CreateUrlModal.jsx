@@ -21,7 +21,7 @@ function CreateUrlModal({onClose, links}) {
 
 
 
-        const response =  await fetch("http://localhost:8787/server/RegisterLink", {
+        const response =  await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterLink`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id: UserData.id,Name:name, Url: url})
