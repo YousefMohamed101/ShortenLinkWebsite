@@ -16,6 +16,7 @@ function LoginModal({onClose,onSwap}) {
             alert('Please enter the missing field');
             return;
         }
+        console.log('API URL:', import.meta.env.VITE_API_URL)
 
         const response = await fetch(`${import.meta.env.VITE_API_URL}/server/login/${username}/${password}`);
 
