@@ -11,4 +11,4 @@ fallthrough = true
 [vars]
 VITE_SUPABASE_URL = "https://twpeblpilhycqrpfcfrl.supabase.co"
 VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY= "sb_publishable_PWEJYilwSucdtIR0U-sF4w_O9eYg4Gc"
-VITE_API_URL= "https://shertnlnk.thehappyboy28.workers.dev"
+VITE_API_URL= "https://shertnlink.pages.dev"
