@@ -23,7 +23,7 @@ function UserPage() {
 
                 if (!UserData?.id) return  // guard: don't fetch if id isn't ready
                 console.log(UserData.id)
-                const response =  await fetch(`http://localhost:8787/server/GetLinks/${UserData.id}`);
+                const response =  await fetch(`${import.meta.env.VITE_API_URL}/server/GetLinks/${UserData.id}`);
                 const data = await response.json();
                 console.log(data);
 
