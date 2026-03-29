@@ -8,7 +8,7 @@ const app = new Hono()
 app.use('*', cors({
     origin: ['http://localhost:5173','https://shertnlnk.pages.dev','https://shertnlnk.workers.dev'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowHeaders: ['Content-Type', 'Authorization'],
+    allowHeaders: ['Content-Type', 'Authorization','Access-Control-Allow-Origin'],
 }))
 
 
