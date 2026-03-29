@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './LoginModalcss.css'
+import {supabase} from "../utils/supabase.js";
 
 function RegisterModal({onClose,onSwap}) {
     const [username, setUsername] = useState('')
@@ -14,8 +15,19 @@ function RegisterModal({onClose,onSwap}) {
             return;
         }
 
+        const { data, error } = await supabase.from('Users').insert([{
+            username: username, email:email, password:password
+        }]).select().single();
 
 
+        if (error) {
+            console.error("Insert failed:", error.message);
+            return;
+        }
+        console.log("New Link ID:", data.id);
+        return data;
+
+        /*
         const response = await fetch('http://localhost:5000/server/RegisterUser',{
             method:'POST',
             headers:{"Content-Type":"application/json"},
@@ -27,7 +39,7 @@ function RegisterModal({onClose,onSwap}) {
         if(response.status === 500 || response.status === 401) {
             alert(data.error)
         }
-
+        */
     }
 
     return (

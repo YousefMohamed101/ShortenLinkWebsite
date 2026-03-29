@@ -4,7 +4,7 @@ import "./UserPagecCss.css"
 import {createPortal} from "react-dom";
 import CreateUrlModal from "../Portals/CreateUrlModal.jsx";
 import ShowLinkData from "./ShowLinkData.jsx";
-
+import { supabase } from '../utils/supabase.js'
 
 function UserPage() {
     const {UserData,logout} = useContext(AuthedContext);
@@ -22,10 +22,20 @@ function UserPage() {
     useEffect(() => {
             const Links = async ()=>{
 
+                /*
                 const response =  await fetch(`http://localhost:5000/server/GetLinks/${UserData.id}`);
                 const data = await response.json();
                 console.log(data);
+                */
+
+                const{data,error} = await supabase.from('Links').select().eq('user_id',UserData.id);
+                if(error){
+                    console.log(error)
+                    return;
+                }
+                console.log(data);
                 setLinksData(data);
+
 
             }
             Links();
@@ -44,7 +54,7 @@ function UserPage() {
         <div>
 
             <div className="PageContainer">
-                <h1>You are Logged in HI {UserData?.username}</h1>
+                <h1> HI {UserData?.username}</h1>
                     <button className="SubmitButton" onClick={()=>setSaveUrl(true)}>Shorten link</button>
                 <div className="LinksContainer">
                     {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} link_data={selectedLink} link_array={setLinksData}/>)}
