@@ -6,7 +6,7 @@ import Generateshort from "../Scripts/UrlEncoder.js";
 const app = new Hono()
 
 app.use('*', cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173','https://shertnlnk.thehappyboy28.workers.dev'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization'],
 }))
@@ -76,7 +76,7 @@ app.delete('/server/Deletelink/:LinkId',async (c) => {
     const supabase = getSupabase(c.env);
 
     try{
-        const {data}= await supabase.from('Links').delete().eq("id", LinkId);
+        await supabase.from('Links').delete().eq("id", LinkId);
         return c.json("deleted successfully",200)
     }catch (err){
         console.log("Database error:", err);
