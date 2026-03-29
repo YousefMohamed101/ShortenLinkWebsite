@@ -1,7 +1,6 @@
 import {useContext, useState} from "react";
 import {AuthedContext} from "../AuthedContext.jsx";
 import "./LoginModalcss.css"
-import Generateshort from "../Scripts/UrlEncoder.js";
 
 function CreateUrlModal({onClose, links}) {
 
