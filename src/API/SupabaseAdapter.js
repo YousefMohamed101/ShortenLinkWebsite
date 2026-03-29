@@ -10,17 +10,17 @@ app.use('*', cors({
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization','Access-Control-Allow-Origin'],
 }))
-
+app.onError((err, c) => {
+    console.error('Worker crash:', err.message)
+    return c.json({ error: err.message }, 500)
+})
 app.get('/debug', (c) => {
     return c.json({
         supabase_url: c.env.VITE_SUPABASE_URL ?? 'MISSING',
         supabase_key: c.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY ? 'SET' : 'MISSING'
     })
 })
-app.onError((err, c) => {
-    console.error('Worker crash:', err.message)
-    return c.json({ error: err.message }, 500)
-})
+
 
 app.post('/server/RegisterUser', async (c) => {
     const { username, email, password } = await c.req.json()
