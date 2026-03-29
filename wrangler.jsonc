@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "shertnlnk",
-  "compatibility_date": "2025-09-27",
+  "compatibility_date": "2024-09-23",
   "observability": {
     "enabled": true
   },
