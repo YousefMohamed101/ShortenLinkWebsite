@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import {getSupabase} from "../utils/supabase.js";
+import Generateshort from "../Scripts/UrlEncoder.js";
 
 const app = new Hono()
 
@@ -129,29 +130,60 @@ app.get('/server/GetLinkAnalysis/:LinkId', (c) => {
 app.get('/:shortcode', async (c) => {
     const shortcode = c.req.param('shortcode');
 
+
+
     const user_ip = c.req.header('cf-connecting-ip') ;
     const country_code = c.req.raw.cf?.country ?? 'unknown' ;
     const user_agent = c.req.header('user-agent') ?? 'unknown';
 
-    const referrer = c.req.header('referer') ?? 'Direct';
+    const origin = c.req.header('referer') ?? 'Direct';
     const supabase = getSupabase(c.env);
 
 
-    const {data, error} = await supabase.from("Links").select().eq("shorten_code",shortcode);
-    console.log(data);
-    //const analyse = db.prepare('INSERT INTO ClickAnalytics (link_id, ip_address, country_code, user_agent, origin, clicked_at) VALUES (?,?,?,?,?,?)');
+    const {data, error} = await supabase.from("Links").select().eq("shorten_code",shortcode).single();
+    const link_id = data.id;
+
+
 
 
     if(data){
-
-        //analyse.run(link.id,user_ip,country_code,user_agent,referrer,new Date().toISOString().split('T')[0]);
-
+        const{error} = await supabase.from('ClickAnalytics').insert([{link_id, ip_address:user_ip, country_code, user_agent, origin}]);
+        console.log(link_id);
+        console.log(data);
+        console.log(error);
         return c.redirect(String(data.Url));
     }else {
-        // 3. Not found
         console.log(error);
         return c.json("not found",404);
     }
+
+})
+
+app.post('/server/RegisterLink', async (c) => {
+    const { id,Name,Url} = await c.req.json();
+    if (!id || !Name || !Url){
+        return c.json({ error: 'Missing data' }, 400);
+    }
+    const supabase = getSupabase(c.env);
+
+    const {data,error} = await supabase.from('Links').insert([{user_id:id,link_name:Name,Url:Url}]).select().single();
+
+    if (error) {
+        return c.json({error: error.message}, 500)
+    }
+
+
+    const shrtCode = Generateshort(data.id);
+
+    const {error: updateError} = await supabase.from('Links').update([{shorten_code: shrtCode}]).eq('id',data.id);
+    if (updateError) {
+        return c.json({error: updateError.message}, 500)
+    }
+
+   return  c.json({message:"successfully added link",data},200);
+
+
+
 
 })
 

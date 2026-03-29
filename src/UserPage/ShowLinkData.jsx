@@ -111,7 +111,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </button>
                 <div className="dataContainer">
                     <div className="shortenLinkContainer">
-                        <button onClick={()=>window.open(`http://localhost:5000/${link_data.ShortenCode}`)} className="linkDataButton">http://localhost:8787/{link_data.shorten_code}</button>
+                        <button onClick={()=>window.open(`http://localhost:8787/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:8787/{link_data.shorten_code}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard}/>
                     </div>
                     <label>Total click counts: {linkStats.total}</label>

@@ -20,9 +20,9 @@ function CreateUrlModal({onClose, links}) {
             return;
         }
 
-        /*
 
-        const response =  await fetch("http://localhost:5000/server/RegisterLink", {
+
+        const response =  await fetch("http://localhost:8787/server/RegisterLink", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id: UserData.id,Name:name, Url: url})
@@ -30,9 +30,9 @@ function CreateUrlModal({onClose, links}) {
         })
         const data = await response.json();
         console.log(data);
-        */
 
-        //links(prevLinks => [...prevLinks,data.link]);
+
+        links(prevLinks => [...prevLinks,data.link]);
 
     };
 
