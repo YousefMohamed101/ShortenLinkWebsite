@@ -86,14 +86,14 @@ app.delete('/server/Deletelink/:LinkId',async (c) => {
 
 //analytics
 
-app.get('/server/GetLinkAnalysis/:LinkId', (c) => {
+app.get('/server/GetLinkAnalysis/:LinkId', async (c) => {
 
     const LinkId  = c.req.param('LinkId');
     const supabase = getSupabase(c.env);
 
 
 
-    const { data, error }=supabase.from('ClickAnalytics').select('user_agent, origin, country_code, clicked_at').eq('link_id',LinkId);
+    const { data, error }= await supabase.from('ClickAnalytics').select('user_agent, origin, country_code, clicked_at').eq('link_id',LinkId);
     if (error) return c.json({ error: error.message }, 500);
 
     if (!data || data.length === 0) {
