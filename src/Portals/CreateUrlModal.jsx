@@ -1,7 +1,6 @@
 import {useContext, useState} from "react";
 import {AuthedContext} from "../AuthedContext.jsx";
 import "./LoginModalcss.css"
-import {supabase} from "../utils/supabase.js";
 import Generateshort from "../Scripts/UrlEncoder.js";
 
 function CreateUrlModal({onClose, links}) {
@@ -33,14 +32,6 @@ function CreateUrlModal({onClose, links}) {
         console.log(data);
         */
 
-        const {data, errors} = await supabase.from('Links').insert({user_id:UserData.id,link_name:name,shorten_code:null,Url:url}).select("id");
-        console.log(data)
-        if(errors){
-            alert(errors);
-            return;
-        }
-        const shrt_code = Generateshort(data[0].id);
-        await supabase.from('Links').update({shorten_code:shrt_code}).eq('id',data[0].id)
         //links(prevLinks => [...prevLinks,data.link]);
 
     };

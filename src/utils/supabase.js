@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const getSupabase = (env) => {
+    // In Cloudflare, variables are properties of 'env'
+    return createClient('https://twpeblpilhycqrpfcfrl.supabase.co', 'sb_publishable_PWEJYilwSucdtIR0U-sF4w_O9eYg4Gc');
+};

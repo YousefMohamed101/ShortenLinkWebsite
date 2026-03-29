@@ -16,6 +16,7 @@
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.6",
     "express": "^5.2.1",
+    "hono": "^4.12.9",
     "ngx-echarts": "^21.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"

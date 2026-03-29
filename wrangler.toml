@@ -1,0 +1,13 @@
+name = "my-cv-api"
+main = "src/API/SupabaseAdapter.js"
+compatibility_date = "2024-09-23" # <-- Update this date!
+node_compat = true
+
+[[rules]]
+type = "Data"
+globs = ["**/*.png"]
+fallthrough = true
+
+[vars]
+VITE_SUPABASE_URL = "https://twpeblpilhycqrpfcfrl.supabase.co"
+VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY= "sb_publishable_PWEJYilwSucdtIR0U-sF4w_O9eYg4Gc"

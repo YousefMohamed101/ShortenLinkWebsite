@@ -163,9 +163,6 @@ app.delete('/server/Deletelink/:LinkId', (req, res) => {
         console.log("Database error:", err);
         res.status(404).send("not found");
     }
-
-
-
 })
 
 

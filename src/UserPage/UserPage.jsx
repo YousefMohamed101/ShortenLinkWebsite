@@ -4,11 +4,10 @@ import "./UserPagecCss.css"
 import {createPortal} from "react-dom";
 import CreateUrlModal from "../Portals/CreateUrlModal.jsx";
 import ShowLinkData from "./ShowLinkData.jsx";
-import { supabase } from '../utils/supabase.js'
 
 function UserPage() {
     const {UserData,logout} = useContext(AuthedContext);
-    const [LinksData, setLinksData] = useState([{}]);
+    const [LinksData, setLinksData] = useState([]);
     const [saveUrl, setSaveUrl] = useState(false);
     const [viewLinkData, setViewLinkData] = useState(false);
     const [selectedLink, setSelectedLink] = useState(null);
@@ -22,19 +21,18 @@ function UserPage() {
     useEffect(() => {
             const Links = async ()=>{
 
-                /*
-                const response =  await fetch(`http://localhost:5000/server/GetLinks/${UserData.id}`);
+                if (!UserData?.id) return  // guard: don't fetch if id isn't ready
+                console.log(UserData.id)
+                const response =  await fetch(`http://localhost:8787/server/GetLinks/${UserData.id}`);
                 const data = await response.json();
                 console.log(data);
-                */
 
-                const{data,error} = await supabase.from('Links').select().eq('user_id',UserData.id);
-                if(error){
-                    console.log(error)
-                    return;
+                if (!response.ok) {
+                    console.error('Failed to fetch links:', data.error)
+                    return  // don't call setLinksData with an error object
                 }
-                console.log(data);
-                setLinksData(data);
+
+                setLinksData(data)
 
 
             }

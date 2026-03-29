@@ -1,6 +1,5 @@
 import {useContext, useState} from 'react'
 import './LoginModalcss.css'
-import { supabase } from '../utils/supabase.js'
 
 
 import {AuthedContext} from "../AuthedContext.jsx";
@@ -18,35 +17,15 @@ function LoginModal({onClose,onSwap}) {
             return;
         }
 
-        const { data, error } = await supabase.from('Users').select('*').eq('username', username).eq('password', password).single();
-
-        if (error || !data) {
-            console.error("Login error:", error);
-            alert("Invalid username or password");
-            return;
-        }
-
-        login({
-            id: data.id,
-            username: data.username,
-            email: data.email,
-            joinedat: data.joined_at
-        });
-        onClose();
-
-        alert("logged in successfully");
-
-
-
-
-        /*const response = await fetch(`http://localhost:5000/server/login/${username}/${password}`);
+        const response = await fetch(`http://localhost:8787/server/login/${username}/${password}`);
 
         const data = await response.json();
+        console.log(data);
         if(response.status === 200) {
             login({id: data.user.id,username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});
             onClose();
         }
-        */
+
 
     }
     return (
