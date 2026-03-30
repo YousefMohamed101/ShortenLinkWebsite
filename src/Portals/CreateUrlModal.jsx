@@ -7,14 +7,24 @@ function CreateUrlModal({onClose, links}) {
     const {UserData} = useContext(AuthedContext);
     const [url, setUrl] = useState("");
     const [name, setName] = useState("");
-
+    const isValidHttpUrl = (string) => {
+        let url;
+        try {
+            url = new URL(string);
+            if(url){
+                return true;
+            }
+        } catch {
+            return false;
+        }
+    }
     const Shortlink = async ()=> {
 
         if(!name){
             alert("Please enter a valid name");
             return;
         }
-        if(!url){
+        if(!isValidHttpUrl(url)){
             alert("Please enter a valid url");
             return;
         }

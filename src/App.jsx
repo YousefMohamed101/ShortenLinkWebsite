@@ -8,6 +8,7 @@ function App() {
 
   const{loggedIn} = useContext(AuthedContext);
 
+
   return (
     <>
       {!loggedIn &&(<LoginPage />)}

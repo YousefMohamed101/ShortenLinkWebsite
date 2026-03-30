@@ -14,6 +14,10 @@ function RegisterModal({onClose,onSwap}) {
             return;
         }
 
+        if(!email.includes('@')){
+            alert('Please enter a valid email');
+            return;
+        }
 
 
 
