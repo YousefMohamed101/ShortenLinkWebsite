@@ -32,7 +32,8 @@ function UserPage() {
                     return  // don't call setLinksData with an error object
                 }
 
-                setLinksData(data)
+                setLinksData(data);
+                console.log(LinksData);
 
 
             }
@@ -49,30 +50,53 @@ function UserPage() {
 
 
     return(
-        <div>
-
-            <div className="PageContainer">
-                <h1> HI {UserData?.username}</h1>
-                    <button className="SubmitButton" onClick={()=>setSaveUrl(true)}>Shorten link</button>
-                <div className="LinksContainer">
-                    {viewLinkData &&(<ShowLinkData onClose={()=>setViewLinkData(false)} link_data={selectedLink} link_array={setLinksData}/>)}
-
-                    {!viewLinkData &&(
-                        <li>
-                        {LinksData.map(link => <button className="LinkButton" key={link.id} onClick={()=>ShowLink(link)} >{link.link_name}</button>)}
-                    </li>)}
-
-
-
+        <div className="DashboardWrapper">
+            <header className="DashboardHeader">
+                <div className="HeaderInfo">
+                    <span className="WelcomeText">Welcome back, {UserData?.username}</span>
 
                 </div>
+                <div className="HeaderActions">
+                    <button className="SubmitButton" onClick={() => setSaveUrl(true)}>
+                        + Shorten New Link
+                    </button>
+                    <button className="SignoutButton" onClick={SignOut}>Sign out</button>
+                </div>
+            </header>
 
-            </div>
+            <main className="MainContent">
+                {viewLinkData ? (
+                    <div className="AnalyticsView">
+                        <ShowLinkData
+                            onClose={() => setViewLinkData(false)}
+                            link_data={selectedLink}
+                            link_array={setLinksData}
+                        />
+                    </div>
+                ) : (
+                    <div className="LinksGrid">
+                        {LinksData.length > 0 ? (
+                            LinksData.map(link => (
+                                <div key={link.id} className="LinkCard" onClick={() => ShowLink(link)}>
 
-            {saveUrl && createPortal(<CreateUrlModal onClose={()=>setSaveUrl(false)} links ={setLinksData} />,document.body)}
+                                    <h3 className="LinkTitle">{link.link_name}</h3>
+                                    <p className="LinkUrl">Click to view analytics</p>
+                                    <div className="CardHoverEffect">View Data →</div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="EmptyState">
+                                <p>No links found. Create your first one!</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </main>
 
-
-            <button className="SignoutButton" onClick={SignOut}>Sign out</button>
+            {saveUrl && createPortal(
+                <CreateUrlModal onClose={() => setSaveUrl(false)} links={setLinksData} />,
+                document.body
+            )}
         </div>
     )
 }

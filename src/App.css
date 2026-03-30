@@ -1,34 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
 
-h1{
-  font-size: 64px;
-  color: antiquewhite;
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.03em;
+
   position: absolute;
   top: 13%;
   left: 50%;
   transform: translate(-50%, -50%);
+  white-space: nowrap;
 }
 
-.MainButton:hover{
+.MainButton:hover {
   cursor: pointer;
-  transform: translate(-50%, -50%) scale(1.03); /* */
+  transform: translate(-50%, -50%) scale(1.04);
+  background: #e0e7ff;
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.5),
+  0 0 36px 8px rgba(129, 140, 248, 0.3);
 }
 
-.MainButton{
-  padding: 12px;
-  border-radius: 12px;
+.MainButton:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.MainButton {
+  padding: 14px 20px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
+
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
   font-weight: 600;
-  box-shadow: 0 0 35px 2px darkmagenta ;
-  background: white;
+  letter-spacing: 0.02em;
   color: #0b0f19;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
 
   position: absolute;
   top: 50%;
   left: 50%;
-
   transform: translate(-50%, -50%);
 
-  transition: transform 0.2s ease-out;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background 0.2s ease;
+
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.3),
+  0 0 24px 4px rgba(129, 140, 248, 0.2);
 }

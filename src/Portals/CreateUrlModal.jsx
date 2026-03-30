@@ -31,7 +31,8 @@ function CreateUrlModal({onClose, links}) {
         console.log(data);
 
 
-        links(prevLinks => [...prevLinks,data.link]);
+        links(prevLinks => [...prevLinks,data.data]);
+        onClose();
 
     };
 

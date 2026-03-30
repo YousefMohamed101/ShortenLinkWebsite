@@ -34,11 +34,46 @@ img:hover{
     display: flex;
     width: 100%;
 }
+.dataContainer label{
+    color: #818cf8;
+    font-size: 1.2rem;
+
+}
 
 .Chart{
     height: 350px;
     width: 100%
 }
-.deletButton{
-    background-color: red;
+.deletButton {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    /* The "Ghost Danger" Colors */
+    background: rgba(239, 68, 68, 0.08); /* Very subtle red tint */
+    color: #f87171; /* Soft Tailwind red */
+    border: 1px solid rgba(239, 68, 68, 0.2);
+
+    /* Sizing & Shape */
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin-top: 10px;
+
+    /* Animation */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.deletButton:hover {
+    background: rgba(239, 68, 68, 0.15); /* Slightly darker on hover */
+    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); /* Soft red glow */
+    transform: translateY(-1px);
+}
+
+.deletButton:active {
+    transform: scale(0.98);
 }
