@@ -11,6 +11,8 @@
     "nodejs_compat"
   ],
   "vars": {
-    "VITE_SUPABASE_URL": "https://twpeblpilhycqrpfcfrl.supabase.co"
+    "VITE_SUPABASE_URL": "https://twpeblpilhycqrpfcfrl.supabase.co",
+    "VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY": "sb_publishable_PWEJYilwSucdtIR0U-sF4w_O9eYg4Gc"
+
   }
 }
