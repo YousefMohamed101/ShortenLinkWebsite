@@ -25,7 +25,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
 
     const CopyToClipboard = () => {
         console.log("CopyToClipboard ",link_data.shorten_code);
-        navigator.clipboard.writeText(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`);
+        navigator.clipboard.writeText(`${import.meta.env.VITE_API_URL}/server/${link_data.shorten_code}`);
 
     }
 
@@ -111,7 +111,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </button>
                 <div className="dataContainer">
                     <div className="shortenLinkContainer">
-                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:8787/{link_data.shorten_code}</button>
+                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/server/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:8787/{link_data.shorten_code}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
                     </div>
                     <label>Total click counts: {linkStats.total}</label>
