@@ -6,7 +6,8 @@ import Generateshort from "../Scripts/UrlEncoder.js";
 const app = new Hono()
 
 app.use('*', cors({
-    origin: '*',
+    origin: [ 'http://localhost:5173',
+        'https://shertnlink.pages.dev',],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization','Access-Control-Allow-Origin'],
 }))
