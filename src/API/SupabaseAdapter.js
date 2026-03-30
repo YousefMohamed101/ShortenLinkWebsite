@@ -142,7 +142,6 @@ app.get('/server/:shortcode', async (c) => {
 
 
 
-    const user_ip = c.req.header('cf-connecting-ip') ;
     const country_code = c.req.raw.cf?.country ?? 'unknown' ;
     const user_agent = c.req.header('user-agent') ?? 'unknown';
 
@@ -157,7 +156,7 @@ app.get('/server/:shortcode', async (c) => {
 
 
     if(data){
-        const{error} = await supabase.from('ClickAnalytics').insert([{link_id, ip_address:user_ip, country_code, user_agent, origin}]);
+        const{error} = await supabase.from('ClickAnalytics').insert([{link_id, country_code, user_agent, origin}]);
         console.log(link_id);
         console.log(data);
         console.log(error);

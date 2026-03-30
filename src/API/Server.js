@@ -96,19 +96,18 @@ app.post('/server/RegisterLink', (req, res) => {
 app.get('/:shortcode', async (req, res) => {
     const { shortcode } = req.params;
 
-    const user_ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const user_agent = req.useragent?.browser || `unknown`;
     const referrer = req.get("Referrer") || 'Direct';
 
 
     const query = db.prepare('SELECT * FROM Links WHERE ShortenCode = ?').get(shortcode);
     console.log(query);
-    const analyse = db.prepare('INSERT INTO ClickAnalytics (link_id, ip_address, country_code, user_agent, origin, clicked_at) VALUES (?,?,?,?,?,?)');
+    const analyse = db.prepare('INSERT INTO ClickAnalytics (link_id, country_code, user_agent, origin, clicked_at) VALUES (?,?,?,?,?)');
 
 
     if(query){
 
-        analyse.run(query.id,user_ip,"eg",user_agent,referrer,new Date().toISOString().split('T')[0]);
+        analyse.run(query.id,"eg",user_agent,referrer,new Date().toISOString().split('T')[0]);
 
         return res.redirect(String(query.Url));
     }else {
