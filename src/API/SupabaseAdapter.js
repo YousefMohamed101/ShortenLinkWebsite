@@ -6,7 +6,7 @@ import Generateshort from "../Scripts/UrlEncoder.js";
 const app = new Hono()
 
 app.use('*', cors({
-    origin: ['http://localhost:5173','https://shertnlnk.pages.dev','https://shertnlnk.workers.dev'],
+    origin: ['http://localhost:5173','https://shertnlnk.pages.dev','https://shertnlnk.workers.dev','https://shertnlnk.thehappyboy28.workers.dev'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization','Access-Control-Allow-Origin'],
 }))
@@ -136,7 +136,7 @@ app.get('/server/GetLinkAnalysis/:LinkId', async (c) => {
 })
 
 
-app.get('/:shortcode', async (c) => {
+app.get('/server/:shortcode', async (c) => {
     const shortcode = c.req.param('shortcode');
 
 
