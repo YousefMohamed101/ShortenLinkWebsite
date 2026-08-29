@@ -103,23 +103,7 @@ npm run deploy
 
 This builds the frontend and deploys the Hono API as a Cloudflare Worker via Wrangler, using the Supabase-backed routes in `src/API/SupabaseAdapter.js`.
 
-## Project Structure
-
-```
-src/
-├── API/
-│   ├── Server.js            # Express + SQLite backend (local dev)
-│   └── SupabaseAdapter.js   # Hono + Supabase backend (Cloudflare Worker)
-├── LoginPage/                # Landing / login entry point
-├── Portals/                  # Login, register, and create-link modals
-├── UserPage/                 # Dashboard + analytics view
-├── Scripts/
-│   └── UrlEncoder.js         # Base62 short-code generator
-└── utils/
-    └── supabase.js           # Supabase client setup
-```
-
-## Roadmap
+## Current Roadmap
 
 - [ ] Password hashing and token-based session auth
 - [ ] Custom short-code aliases
