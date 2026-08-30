@@ -174,7 +174,7 @@ app.get('/server/GetLinkAnalysis/:LinkId', async (c) => {
 })
 
 
-app.get('/server/:shortcode', async (c) => {
+app.get('/:shortcode', async (c) => {
     const shortcode = c.req.param('shortcode');
 
 

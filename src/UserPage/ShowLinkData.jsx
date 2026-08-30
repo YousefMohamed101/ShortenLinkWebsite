@@ -141,7 +141,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </button>
                 <div className="dataContainer">
                     <div className="shortenLinkContainer">
-                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.ShortenCode}`)} className="linkDataButton">http://localhost:5000/{link_data.ShortenCode}</button>
+                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:5000/{link_data.ShortenCode}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
                     </div>
                     <label>Total click counts: <label style={{ color: 'greenyellow' }}>{linkStats.total}</label></label>
