@@ -37,9 +37,9 @@ function CreateUrlModal({onClose, links}) {
         const data = await response.json();
         console.log(data);
 
-        if (!response.ok) {
+        if (!response.ok || !data.link) {
             alert(data.error || "Failed to create link");
-            return;   // don't push, don't close the modal
+            return;     
         }
 
         links(prevLinks => [...prevLinks, data.link]);
