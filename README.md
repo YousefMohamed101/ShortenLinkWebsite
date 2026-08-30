@@ -2,7 +2,7 @@
 
 A full-stack URL shortener that goes beyond simple redirects. Every shortened link comes with a real-time analytics dashboard — click counts, referrer sources, browser breakdown, and geographic data — visualized with interactive charts.
 
-**[Live Demo](#) · [Report a Bug](#) · [Request a Feature](#)**
+<p align = "center"> **[Live Demo](shertnlink.pages.dev) · [Report a Bug](#) · [Request a Feature](#)** </p>
 
 ---
 
