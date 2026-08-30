@@ -35,14 +35,14 @@ function CreateUrlModal({onClose, links}) {
         });
 
         const data = await response.json();
-        console.log(data);
+        console.log(data.data);
 
-        if (!response.ok || !data.link) {
+        if (!response.ok || !data.data) {
             alert(data.error || "Failed to create link");
             return;     
         }
 
-        links(prevLinks => [...prevLinks, data.link]);
+        links(prevLinks => [...prevLinks, data.data]);
         onClose();
     };
 
