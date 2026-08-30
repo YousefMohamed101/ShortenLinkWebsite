@@ -18,32 +18,32 @@ function CreateUrlModal({onClose, links}) {
             return false;
         }
     }
-    const Shortlink = async ()=> {
-
-        if(!name){
+    const Shortlink = async () => {
+        if (!name) {
             alert("Please enter a valid name");
             return;
         }
-        if(!isValidHttpUrl(url)){
+        if (!isValidHttpUrl(url)) {
             alert("Please enter a valid url");
             return;
         }
 
-
-
-        const response =  await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterLink`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterLink`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id: UserData.id,Name:name, Url: url})
+            body: JSON.stringify({id: UserData.id, Name: name, Url: url})
+        });
 
-        })
         const data = await response.json();
         console.log(data);
 
+        if (!response.ok) {
+            alert(data.error || "Failed to create link");
+            return;   // don't push, don't close the modal
+        }
 
-        links(prevLinks => [...prevLinks,data.data]);
+        links(prevLinks => [...prevLinks, data.link]);
         onClose();
-
     };
 
     return (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './LoginModalcss.css'
 
+
 function RegisterModal({onClose,onSwap}) {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -18,7 +19,6 @@ function RegisterModal({onClose,onSwap}) {
             alert('Please enter a valid email');
             return;
         }
-
 
 
 

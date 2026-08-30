@@ -4,7 +4,7 @@ import Database from 'better-sqlite3'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Generateshort from "../Scripts/UrlEncoder.js";
-
+import bcrypt from "bcrypt";
 
 // Get the directory name of the current file (Server.js)
 const __filename = fileURLToPath(import.meta.url);
@@ -13,10 +13,13 @@ const dbPath = path.resolve(__dirname, '../../Databases/ShortLinkDB.sqlite');
 
 const app = express();
 const db = Database(dbPath);
-console.log("Connecting to database at:", dbPath);
+
+
 app.use(cors());
 app.use(express.json());
 app.set('trust proxy', true);
+
+
 app.post('/server/RegisterUser', (req, res) => {
     const { username,email, password } = req.body;
 
@@ -24,10 +27,12 @@ app.post('/server/RegisterUser', (req, res) => {
         return res.status(400).json({ error: "Missing data" });
     }
 
+    const HashedPassword = bcrypt.hashSync(password, 10);
+
     try{
         const query = db.prepare('INSERT INTO Users (username, email, password, joined_at) VALUES (?,?,?,?)');
 
-        query.run(username, email, password,new Date().toISOString());
+        query.run(username, email, HashedPassword,new Date().toISOString());
         res.status(200).json({ message: "User registered successfully!" });
     }catch(err){
 
@@ -45,29 +50,33 @@ app.post('/server/RegisterUser', (req, res) => {
 
 })
 
-app.get('/server/login/:username/:password', (req, res) => {
+app.get('/server/login/:username/:password',  (req, res) => {
 
     const username = req.params.username;
-    const password = req.params.password;
-    let query = db.prepare('SELECT * FROM Users WHERE username = ? AND password = ?');
-    if(username.toLowerCase().includes('@')){
-        query = db.prepare('SELECT * FROM Users WHERE email = ? AND password = ?');
-    }
-    const user =query.get(username,password);
-    try{
-    if(!user){
-        res.status(401).json({ error: "Invalid username or password." });
+    let password = req.params.password;
+    let query = db.prepare('SELECT * FROM Users WHERE username = ?');
 
-    }
-    res.status(200).json({
-        message: "Login successful!",
-        user: user
-    });
 
-} catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ error: "An error occurred during login." });
-}
+    console.log(password);
+    if (username.toLowerCase().includes('@')) {
+        query = db.prepare('SELECT * FROM Users WHERE email = ?');
+    }
+    const user = query.get(username);
+    try {
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            res.status(401).json({error: "Invalid username or password."});
+
+        }
+
+        res.status(200).json({
+            message: "Login successful!",
+            user: user
+        });
+
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({error: "An error occurred during login."});
+    }
 
 
 })

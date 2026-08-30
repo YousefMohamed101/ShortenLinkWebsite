@@ -29,7 +29,7 @@ function UserPage() {
 
                 if (!response.ok) {
                     console.error('Failed to fetch links:', data.error)
-                    return  // don't call setLinksData with an error object
+                    return
                 }
 
                 setLinksData(data);

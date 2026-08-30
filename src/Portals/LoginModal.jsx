@@ -17,10 +17,10 @@ function LoginModal({onClose,onSwap}) {
             return;
         }
         console.log('API URL:', import.meta.env.VITE_API_URL)
-
         const response = await fetch(`${import.meta.env.VITE_API_URL}/server/login/${username}/${password}`);
 
         const data = await response.json();
+
         console.log(data);
         if(response.status === 200) {
             login({id: data.user.id,username:data.user.username,email:data.user.email,joinedat:data.user.joinedat});

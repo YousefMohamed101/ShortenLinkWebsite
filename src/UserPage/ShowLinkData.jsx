@@ -2,7 +2,10 @@ import EChartsReact from "echarts-for-react";
 import "./LinkDataCss.css"
 import {useEffect, useState} from "react";
 import clipIcon from "../assets/copy.png"
-import * as echarts from 'echarts'; // <--- Add this!
+import * as echarts from 'echarts';
+
+
+
 function ShowLinkData({onClose,link_data,link_array}) {
 
     const [linkStats, setLinkStats] = useState({
@@ -16,6 +19,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
         const get_analysis = async () => {
            const response = await fetch(`${import.meta.env.VITE_API_URL}/server/GetLinkAnalysis/${link_data.id}`);
            const data = await response.json();
+
             setLinkStats({
                 agent_info: Object.entries(data.agent_info || {}).map(([user_agent, total_agent]) => ({ user_agent, total_agent })),
                 referrer_info: Object.entries(data.referrer_info || {}).map(([origin, total_referrer]) => ({ origin, total_referrer })),
@@ -30,8 +34,8 @@ function ShowLinkData({onClose,link_data,link_array}) {
     },[link_data.id])
 
     const CopyToClipboard = () => {
-        console.log("CopyToClipboard ",link_data.shorten_code);
-        navigator.clipboard.writeText(`${import.meta.env.VITE_API_URL}/server/${link_data.shorten_code}`);
+        console.log("CopyToClipboard ",link_data.ShortenCode);
+        navigator.clipboard.writeText(`${import.meta.env.VITE_API_URL}/${link_data.ShortenCode}`);
 
     }
 
@@ -137,7 +141,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </button>
                 <div className="dataContainer">
                     <div className="shortenLinkContainer">
-                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/server/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:8787/{link_data.shorten_code}</button>
+                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.ShortenCode}`)} className="linkDataButton">http://localhost:5000/{link_data.ShortenCode}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
                     </div>
                     <label>Total click counts: <label style={{ color: 'greenyellow' }}>{linkStats.total}</label></label>
