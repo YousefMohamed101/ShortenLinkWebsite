@@ -2,7 +2,11 @@ import EChartsReact from "echarts-for-react";
 import "./LinkDataCss.css"
 import {useEffect, useState} from "react";
 import clipIcon from "../assets/copy.png"
+import qrIcon from "../assets/QR.png"
 import * as echarts from 'echarts';
+import {createPortal} from "react-dom";
+import SignPortal from "../Portals/SignPortal.jsx";
+import QRModal from "../Portals/QRModal.jsx";
 
 
 
@@ -15,6 +19,10 @@ function ShowLinkData({onClose,link_data,link_array}) {
         activity_info: [],
         total: 0
     })
+
+    const [showQR, setQRModal] = useState(false)
+
+
     useEffect(() => {
         const get_analysis = async () => {
            const response = await fetch(`${import.meta.env.VITE_API_URL}/server/GetLinkAnalysis/${link_data.id}`);
@@ -143,6 +151,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                     <div className="shortenLinkContainer">
                         <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:5000/{link_data.shorten_code}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
+                        <img src={qrIcon} width={32} height={32}  onClick={() => setQRModal(true)} alt="copy"/>
                     </div>
                     <label>Total click counts: <label style={{ color: 'greenyellow' }}>{linkStats.total}</label></label>
                     <EChartsReact option={user_agent_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
@@ -152,6 +161,11 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </div>
                 <button className="deletButton" onClick={DeleteUrl}>Delete link</button>
 
+            </div>
+
+
+            <div>
+                {showQR && createPortal(<QRModal onClose={() => setQRModal(false)}  url={`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`}/>,document.body)}
             </div>
         </>
     );
