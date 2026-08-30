@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import {getSupabase} from "../utils/supabase.js";
 import Generateshort from "../Scripts/UrlEncoder.js";
+import bcrypt from "bcrypt";
 
 const app = new Hono()
 
@@ -31,8 +32,9 @@ app.post('/server/RegisterUser', async (c) => {
     }
 
     const supabase = getSupabase(c.env)
+    const hashedPass = bcrypt.hashSync(password,10)
     const { data, error } = await supabase.from('Users').insert([{
-        username, email, password
+        username, email, hashedPass
     }]).select()
 
     if (error) {
@@ -58,8 +60,11 @@ app.get('/server/login/:username/:password', async (c) => {
         .from('Users')
         .select('*')
         .eq(loginColumn, username)
-        .eq('password', password)
         .single()
+    const isMatch = await bcrypt.compare(password, data.password)
+    if (!isMatch) {
+        return c.json({ error: "Invalid username or password." }, 401)
+    }
 
     if (error) {
         console.error("Login error:", error)
