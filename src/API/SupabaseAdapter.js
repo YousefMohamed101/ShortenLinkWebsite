@@ -67,7 +67,6 @@ app.get('/server/login/:username/:password', async (c) => {
     const supabase = getSupabase(c.env)
     let email = username
 
-    // If they typed a username (not an email), look up the matching email first
     if (!username.includes('@')) {
         const { data: profile, error: profileError } = await supabase
             .from('Profiles')
@@ -132,7 +131,7 @@ app.delete('/server/Deletelink/:LinkId',async (c) => {
     }
 })
 
-//analytics
+
 
 app.get('/server/GetLinkAnalysis/:LinkId', async (c) => {
 
