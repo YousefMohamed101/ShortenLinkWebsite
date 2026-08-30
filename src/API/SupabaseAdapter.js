@@ -31,42 +31,80 @@ app.post('/server/RegisterUser', async (c) => {
     }
 
     const supabase = getSupabase(c.env)
-    const { data, error } = await supabase.from('Users').insert([{
-        username, email, password
-    }]).select()
 
-    if (error) {
-        if (error.message.includes('Users_username')) {
-            return c.json({ error: "That username is already taken. Please choose another." }, 409)
-        }
-        if (error.message.includes('Users_email')) {
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+    })
+
+    if (signUpError) {
+        if (signUpError.message.toLowerCase().includes('already registered')) {
             return c.json({ error: "An account with that email already exists." }, 409)
         }
-        return c.json({ error: error.message }, 400)
+        return c.json({ error: signUpError.message }, 400)
     }
 
-    return c.json({ message: `User registered successfully!: ${JSON.stringify(data)}` }, 200)
+    const { error: profileError } = await supabase.from('Users').insert([{
+        id: signUpData.user.id,
+        username,
+        email,
+        joined_at: new Date().toISOString(),
+    }])
+    if (profileError) {
+        if (profileError.message.includes('Profiles_username')) {
+            return c.json({ error: "That username is already taken. Please choose another." }, 409)
+        }
+        return c.json({ error: profileError.message }, 400)
+    }
+
+    return c.json({ message: "User registered successfully!" }, 200)
 })
 
 app.get('/server/login/:username/:password', async (c) => {
     const username = c.req.param('username')
     const password = c.req.param('password')
-    const loginColumn = username.includes('@') ? 'email' : 'username'
 
     const supabase = getSupabase(c.env)
-    const { data, error } = await supabase
-        .from('Users')
-        .select('*')
-        .eq(loginColumn, username)
-        .eq('password', password)
-        .single()
+    let email = username
 
-    if (error) {
-        console.error("Login error:", error)
+    // If they typed a username (not an email), look up the matching email first
+    if (!username.includes('@')) {
+        const { data: profile, error: profileError } = await supabase
+            .from('Profiles')
+            .select('email')
+            .eq('username', username)
+            .single()
+
+        if (profileError || !profile) {
+            return c.json({ error: "Invalid username or password." }, 401)
+        }
+        email = profile.email
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error || !data.session) {
         return c.json({ error: "Invalid username or password." }, 401)
     }
 
-    return c.json({ message: "Login successful!", user: data }, 200)
+    // Fetch the profile row for username/joined_at to match what the frontend expects
+    const { data: profile } = await supabase
+        .from('Profiles')
+        .select('username, email, joined_at')
+        .eq('id', data.user.id)
+        .single()
+
+    return c.json({
+        message: "Login successful!",
+        user: {
+            id: data.user.id,
+            username: profile?.username ?? username,
+            email: data.user.email,
+            joinedat: profile?.joined_at ?? null,
+        },
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+    }, 200)
 })
 
 app.get('/server/GetLinks/:UserId', async (c) => {
