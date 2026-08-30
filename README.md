@@ -107,7 +107,7 @@ This builds the frontend and deploys the Hono API as a Cloudflare Worker via Wra
 
 - [x] ~~Password hashing and token-based session auth~~
 - [ ] Custom short-code aliases
-- [ ] QR code generation
+- [X] ~~QR code generation~~
 - [ ] CSV export for analytics
 
 ## License
