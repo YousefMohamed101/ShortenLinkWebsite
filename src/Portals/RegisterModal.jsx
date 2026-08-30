@@ -6,7 +6,7 @@ function RegisterModal({onClose,onSwap}) {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [isSubmitting, setIsSubmitting] = useState(false);
+
 
     const RegisterUser = async () => {
 
@@ -22,24 +22,19 @@ function RegisterModal({onClose,onSwap}) {
 
 
 
-        setIsSubmitting(true);
 
-        try{
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterUser`,{
-                method:'POST',
-                headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({username: username, email: email, password: password})
-            });
 
-            const data = await response.json();
-            console.log(data);
-            if(response.status === 500 || response.status === 401) {
-                alert(data.error)
-            }
-        }finally{
-            setIsSubmitting(false);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/server/RegisterUser`,{
+            method:'POST',
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({username: username, email: email, password: password})
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if(response.status === 500 || response.status === 401) {
+            alert(data.error)
         }
-
 
     }
 
