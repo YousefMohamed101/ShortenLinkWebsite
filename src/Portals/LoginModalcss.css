@@ -150,14 +150,13 @@ button {
 
 .QRLayout{
     position: fixed;
-    top: 50%;
-    left: 50%;
     transform: translate(200%, 50%);
     background-color: black;
     top: 0;
     left: 0;
     width: 20vw;
     height: 50vh;
+    border-radius: 16px;
     background-color: rgba(15, 20, 35, 0.85);
     display: flex;
     flex-direction: column;
