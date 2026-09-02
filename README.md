@@ -4,8 +4,6 @@ A full-stack URL shortener that goes beyond simple redirects. Every shortened li
 
 <p align = "center"> <b> 
     <a href="https://pages.dev">Live Demo</a> · 
-    <a href="#">Report a Bug</a> · 
-    <a href="#">Request a Feature</a>
 </b>
 </p>
 
