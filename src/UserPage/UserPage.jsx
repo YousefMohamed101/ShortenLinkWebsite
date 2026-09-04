@@ -4,6 +4,7 @@ import "./UserPagecCss.css"
 import {createPortal} from "react-dom";
 import CreateUrlModal from "../Portals/CreateUrlModal.jsx";
 import ShowLinkData from "./ShowLinkData.jsx";
+import {CSVLink} from "react-csv";
 
 function UserPage() {
     const {UserData,logout} = useContext(AuthedContext);
@@ -65,6 +66,23 @@ function UserPage() {
         setViewLinkData(true);
     }
 
+    const csvHeaders = [
+        { label: "Link Name", key: "link_name" },
+        { label: "Destination URL", key: "Url" },
+        { label: "Short Code", key: "shorten_code" },
+        { label: "Short URL", key: "short_url" },      // derived field, see below
+        { label: "Created At", key: "created_at" },
+    ];
+    const csvData = (LinksData || []).map(link => ({
+        link_name: link.link_name,
+        Url: link.Url,
+        shorten_code: link.shorten_code,
+        short_url: `${import.meta.env.VITE_API_URL}/${link.shorten_code}`,
+        created_at: link.created_at
+            ? new Date(link.created_at).toLocaleString()
+            : "",
+    }));
+
 
     return(
         <div className="DashboardWrapper">
@@ -74,6 +92,7 @@ function UserPage() {
 
                 </div>
                 <div className="HeaderActions">
+                    <CSVLink className="SubmitButton" data={csvData} headers={csvHeaders} filename={`shertnlink-export-${new Date().toISOString().slice(0,10)}.csv`} target="_blank"> Export to csv</CSVLink>
                     <button className="SubmitButton" onClick={() => setSaveUrl(true)}>
                         + Shorten New Link
                     </button>
