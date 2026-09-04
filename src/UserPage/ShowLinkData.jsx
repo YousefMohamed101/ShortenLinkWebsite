@@ -23,6 +23,20 @@ function ShowLinkData({onClose,link_data,link_array,onLinksUpdate}) {
 
     const [showQR, setQRModal] = useState(false)
     const [showEdit, setCodeEdit] = useState(false)
+    const UpdateAnalysis = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/server/GetLinkAnalysis/${link_data.id}`);
+        const data = await response.json();
+
+        setLinkStats({
+            agent_info: Object.entries(data.agent_info || {}).map(([user_agent, total_agent]) => ({ user_agent, total_agent })),
+            referrer_info: Object.entries(data.referrer_info || {}).map(([origin, total_referrer]) => ({ origin, total_referrer })),
+            country_info: Object.entries(data.country_info || {}).map(([country_code, total_country]) => ({ country_code, total_country })),
+            activity_info: Object.entries(data.activity_info || {}).map(([clicked_at, total_click]) => ({ clicked_at, total_click })),
+            total: data.total ?? 0
+        });
+
+        console.log(data);
+    }
 
     useEffect(() => {
         const get_analysis = async () => {
@@ -145,6 +159,7 @@ function ShowLinkData({onClose,link_data,link_array,onLinksUpdate}) {
  const openlink = ()=> {
      window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`);
      onLinksUpdate();
+     UpdateAnalysis();
  }
 
     return(
