@@ -6,7 +6,7 @@ function EditCodeModal({link_data,onClose}) {
 
     const {UserData} = useContext(AuthedContext);
 
-    const [code, setCode] = useState(null);
+    const [code, setCode] = useState("");
 
     const editShortCode = async () => {
         await fetch(`${import.meta.env.VITE_API_URL}/EditCode`,{method: "POST",
@@ -20,7 +20,7 @@ function EditCodeModal({link_data,onClose}) {
         <div className = "URLContainer">
             <form className="form" >
                 <label> Name:</label>
-                <input className="saveUrlField" onChange={e =>setCode(e.target.value)} value={name} placeholder="Enter Your Code" />
+                <input className="saveUrlField" onChange={e =>setCode(e.target.value)} value={code} placeholder="Enter Your Code" />
 
             </form>
             <button onClick={editShortCode}>Update</button>
