@@ -3,9 +3,7 @@
 A full-stack URL shortener that goes beyond simple redirects. Every shortened link comes with a real-time analytics dashboard — click counts, referrer sources, browser breakdown, and geographic data — visualized with interactive charts.
 
 <p align = "center"> <b> 
-    <a href="https://pages.dev">Live Demo</a> · 
-    <a href="#">Report a Bug</a> · 
-    <a href="#">Request a Feature</a>
+    <a href="https://pages.dev">Live Demo</a>
 </b>
 </p>
 
