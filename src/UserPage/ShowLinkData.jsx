@@ -5,8 +5,9 @@ import clipIcon from "../assets/copy.png"
 import qrIcon from "../assets/QR.png"
 import * as echarts from 'echarts';
 import {createPortal} from "react-dom";
-import SignPortal from "../Portals/SignPortal.jsx";
 import QRModal from "../Portals/QRModal.jsx";
+import EditCodeModal from "../Portals/EditCodeModal.jsx";
+import CodeEditIcon from "../assets/codeEditIcon.png"
 
 
 
@@ -21,7 +22,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
     })
 
     const [showQR, setQRModal] = useState(false)
-
+    const [showEdit, setCodeEdit] = useState(false)
 
     useEffect(() => {
         const get_analysis = async () => {
@@ -141,6 +142,8 @@ function ShowLinkData({onClose,link_data,link_array}) {
     };
 
 
+
+
     return(
         <>
             <div className="linkDataContainer">
@@ -152,6 +155,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                         <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:5000/{link_data.shorten_code}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
                         <img src={qrIcon} width={32} height={32}  onClick={() => setQRModal(true)} alt="copy"/>
+                        <img src={CodeEditIcon} width={32} height={32}  onClick={() => setCodeEdit(true)} alt="copy"/>
                     </div>
                     <label>Total click counts: <label style={{ color: 'greenyellow' }}>{linkStats.total}</label></label>
                     <EChartsReact option={user_agent_chart} style={{'height':`212px`,'width': `100%`}} opts={{renderer: `svg`}}/>
@@ -166,6 +170,9 @@ function ShowLinkData({onClose,link_data,link_array}) {
 
             <div>
                 {showQR && createPortal(<QRModal onClose={() => setQRModal(false)}  url={`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`}/>,document.body)}
+            </div>
+            <div>
+                {showEdit && createPortal(<EditCodeModal onClose={() => setCodeEdit(false)}  link_data={link_data}/>,document.body)}
             </div>
         </>
     );

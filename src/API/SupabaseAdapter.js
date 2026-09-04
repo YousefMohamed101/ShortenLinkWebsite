@@ -233,5 +233,27 @@ app.post('/server/RegisterLink', async (c) => {
 
 })
 
+app.post('/EditCode', async (c) => {
+    const { id,linkId,code} = await c.req.json();
+    if (!id || !linkId){
+        return c.json({ error: 'Missing data' }, 400);
+    }
+    const supabase = getSupabase(c.env);
+
+    const {error: updateError} = await supabase.from('Links').update([{shorten_code: code}]).eq('id',linkId).eq('user_id',id);
+
+
+
+    if (updateError) {
+        return c.json({error: updateError.message}, 500)
+    }
+
+    return  c.json({message:"successfully added edited"},200);
+
+
+
+
+})
+
 
 export default app
