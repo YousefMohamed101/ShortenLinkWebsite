@@ -45,20 +45,6 @@ The app ships with two interchangeable backends: a local **Express + SQLite** se
 - Wrangler for Cloudflare Workers deployment
 - ESLint for code quality
 
-## Architecture
-
-```
-┌─────────────┐        ┌──────────────────────┐        ┌────────────┐
-│   React SPA │  --->  │  Hono API (Worker)    │  --->  │  Supabase  │
-│  (Vite)     │        │  or Express (local)   │        │ (Postgres) │
-└─────────────┘        └──────────────────────┘        └────────────┘
-                                  │
-                                  ▼
-                         Click Analytics logged
-                    (browser, referrer, country, time)
-```
-
-When a short link is visited, the API logs the request metadata before redirecting the user, then aggregates that data on demand for the analytics dashboard.
 
 ## Getting Started
 
@@ -111,7 +97,7 @@ This builds the frontend and deploys the Hono API as a Cloudflare Worker via Wra
 - [x] ~~Password hashing and token-based session auth~~
 - [x] ~~Custom short-code aliases~~
 - [X] ~~QR code generation~~
-- [ ] CSV export for analytics
+- [x] ~~CSV export for analytics~~
 
 ## License
 
