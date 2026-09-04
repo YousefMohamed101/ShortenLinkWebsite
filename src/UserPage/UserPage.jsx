@@ -57,7 +57,7 @@ function UserPage() {
             }
             Links();
         },
-        [ UserData.id])
+        [ UserData?.id])
 
 
     const ShowLink = (linkData) => {

@@ -107,40 +107,58 @@ app.get('/server/login/:username/:password', async (c) => {
 })
 
 app.get('/server/GetLinks/:UserId', async (c) => {
-    const UserId  = c.req.param('UserId');
+    const UserId = c.req.param('UserId');
     const supabase = getSupabase(c.env);
 
-    const {data,error} = await supabase.from('Links').select().eq("user_id", UserId);
+    const { data: links, error: linksError } = await supabase
+        .from('Links')
+        .select()
+        .eq("user_id", UserId);
 
-    if (error) return c.json({ error: error.message }, 500);
+    if (linksError) return c.json({ error: linksError.message }, 500);
+    if (!links || links.length === 0) return c.json([], 200);
 
+    const linkIds = links.map(l => l.id);
 
+    const { data: clicks, error: clicksError } = await supabase
+        .from('ClickAnalytics')
+        .select('link_id, user_agent, origin, country_code')
+        .in('link_id', linkIds);
 
-    const sortedIds = data.map(l => l.id);
+    if (clicksError) {
+        console.error('ClickAnalytics query failed:', clicksError.message);
+        return c.json({ error: clicksError.message }, 500);
+    }
 
-    const {linkdata,linkerror} = await supabase.from("ClickAnalyticks").select('link_id,user_id, origin, country_code').in('link_id', sortedIds);
-    if (linkerror) return c.json({ error: linkerror.message }, 500);
-
-    const sortAnalytics = {};
-    for (const id of sortedIds) {
-        sortAnalytics[id] = {
+    const analyticsById = {};
+    for (const id of linkIds) {
+        analyticsById[id] = {
             click_amount: 0,
             browsers: new Set(),
             from: new Set(),
             countries: new Set(),
         };
     }
-    for (const row of (linkdata || [])) {
-        const entry = sortAnalytics[linkdata.link_id];
-        if (!entry) continue;
+
+    for (const row of (clicks || [])) {
+        const entry = analyticsById[row.link_id];
+        if (!entry) {
+            console.warn('Orphan click row, no matching link_id:', row.link_id);
+            continue;
+        }
         entry.click_amount += 1;
         entry.browsers.add(row.user_agent || 'unknown');
         entry.from.add(row.origin || 'Direct');
         entry.countries.add(row.country_code || 'unknown');
     }
 
-    const merged = data.map(link => {
-        const analysis = sortAnalytics[data.id];
+    const merged = links.map(link => {
+        const analysis = analyticsById[link.id] || {
+            click_amount: 0,
+            browsers: new Set(),
+            from: new Set(),
+            countries: new Set(),
+        };
         return {
             ...link,
             click_amount: analysis.click_amount,
@@ -151,10 +169,7 @@ app.get('/server/GetLinks/:UserId', async (c) => {
     });
 
     return c.json(merged, 200);
-
-
 })
-
 app.delete('/server/Deletelink/:LinkId',async (c) => {
     const LinkId =c.req.param('LinkId');
     const supabase = getSupabase(c.env);
