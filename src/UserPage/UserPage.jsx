@@ -16,7 +16,24 @@ function UserPage() {
     const SignOut = () => {
         logout();
     }
+    const updateLinks = async ()=>{
 
+        if (!UserData?.id) return  // guard: don't fetch if id isn't ready
+        console.log(UserData.id)
+        const response =  await fetch(`${import.meta.env.VITE_API_URL}/server/GetLinks/${UserData.id}`);
+        const data = await response.json();
+        console.log(data);
+
+        if (!response.ok) {
+            console.error('Failed to fetch links:', data.error)
+            return
+        }
+
+        setLinksData(data);
+        console.log(LinksData);
+
+
+    }
 
     useEffect(() => {
             const Links = async ()=>{
@@ -71,6 +88,7 @@ function UserPage() {
                             onClose={() => setViewLinkData(false)}
                             link_data={selectedLink}
                             link_array={setLinksData}
+                            onLinksUpdate={updateLinks}
                         />
                     </div>
                 ) : (

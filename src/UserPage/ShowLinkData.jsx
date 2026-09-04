@@ -11,7 +11,7 @@ import CodeEditIcon from "../assets/codeEditIcon.png"
 
 
 
-function ShowLinkData({onClose,link_data,link_array}) {
+function ShowLinkData({onClose,link_data,link_array,onLinksUpdate}) {
 
     const [linkStats, setLinkStats] = useState({
         agent_info: [],
@@ -142,7 +142,10 @@ function ShowLinkData({onClose,link_data,link_array}) {
     };
 
 
-
+ const openlink = ()=> {
+     window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`);
+     onLinksUpdate();
+ }
 
     return(
         <>
@@ -152,7 +155,7 @@ function ShowLinkData({onClose,link_data,link_array}) {
                 </button>
                 <div className="dataContainer">
                     <div className="shortenLinkContainer">
-                        <button onClick={()=>window.open(`${import.meta.env.VITE_API_URL}/${link_data.shorten_code}`)} className="linkDataButton">http://localhost:5000/{link_data.shorten_code}</button>
+                        <button onClick={openlink} className="linkDataButton">http://localhost:5000/{link_data.shorten_code}</button>
                         <img src={clipIcon} width={32} height={32}  onClick={CopyToClipboard} alt="copy"/>
                         <img src={qrIcon} width={32} height={32}  onClick={() => setQRModal(true)} alt="copy"/>
                         <img src={CodeEditIcon} width={32} height={32}  onClick={() => setCodeEdit(true)} alt="copy"/>
