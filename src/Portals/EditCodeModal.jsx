@@ -9,10 +9,24 @@ function EditCodeModal({link_data,onClose}) {
     const [code, setCode] = useState("");
 
     const editShortCode = async () => {
-        await fetch(`${import.meta.env.VITE_API_URL}/EditCode`,{method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id: UserData.id,linkId: link_data.id, Code: code})});
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/EditCode`, {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: UserData.id, linkId: link_data.id, code: code})
+            });
 
+            const data = await res.json();
+
+            if (!res.ok) {
+                console.error("Update failed:", data.error);
+                return;
+            }
+
+            onClose()
+        } catch (err) {
+            console.error("Network error:", err);
+        }
     }
 
     return (
