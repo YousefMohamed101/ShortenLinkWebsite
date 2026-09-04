@@ -84,9 +84,9 @@ function UserPage() {
         short_url: `${import.meta.env.VITE_API_URL}/${link.shorten_code}`,
         created_at: link.created_at ? new Date(link.created_at).toLocaleString() : "",
         click_amount: link.click_amount,
-        browsers: link.browsers.join("; "),
-        from: link.from.join("; "),
-        countries: link.countries.join("; "),
+        browsers: link.browsers.join(", "),
+        from: link.from.join(", "),
+        countries: link.countries.join(", "),
 
     }));
 
