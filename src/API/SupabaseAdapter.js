@@ -112,9 +112,46 @@ app.get('/server/GetLinks/:UserId', async (c) => {
 
     const {data,error} = await supabase.from('Links').select().eq("user_id", UserId);
 
-    if (error) return c.json({ error: error.message }, 500)
+    if (error) return c.json({ error: error.message }, 500);
 
-    return c.json(data, 200)  // not c.res.json — just c.json()
+
+
+    const sortedIds = data.map(l => l.id);
+
+    const {linkdata,linkerror} = await supabase.from("ClickAnalyticks").select('link_id,user_id, origin, country_code').in('link_id', sortedIds);
+    if (linkerror) return c.json({ error: linkerror.message }, 500);
+
+    const sortAnalytics = {};
+    for (const id of sortedIds) {
+        sortAnalytics[id] = {
+            click_amount: 0,
+            browsers: new Set(),
+            from: new Set(),
+            countries: new Set(),
+        };
+    }
+    for (const row of (linkdata || [])) {
+        const entry = sortAnalytics[linkdata.link_id];
+        if (!entry) continue;
+        entry.click_amount += 1;
+        entry.browsers.add(row.user_agent || 'unknown');
+        entry.from.add(row.origin || 'Direct');
+        entry.countries.add(row.country_code || 'unknown');
+    }
+
+    const merged = data.map(link => {
+        const analysis = sortAnalytics[data.id];
+        return {
+            ...link,
+            click_amount: analysis.click_amount,
+            browsers: [...analysis.browsers],
+            from: [...analysis.from],
+            countries: [...analysis.countries],
+        };
+    });
+
+    return c.json(merged, 200);
+
 
 })
 

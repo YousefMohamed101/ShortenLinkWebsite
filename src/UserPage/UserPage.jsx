@@ -57,7 +57,7 @@ function UserPage() {
             }
             Links();
         },
-        [UserData?.id])
+        [LinksData, UserData.id])
 
 
     const ShowLink = (linkData) => {
@@ -72,15 +72,22 @@ function UserPage() {
         { label: "Short Code", key: "shorten_code" },
         { label: "Short URL", key: "short_url" },      // derived field, see below
         { label: "Created At", key: "created_at" },
+        { label: "Click Amount", key: "click_amount" },
+        { label: "Browsers", key: "browsers" },
+        { label: "Clicked From", key: "from" },
+        { label: "Countries", key: "countries" },
     ];
     const csvData = (LinksData || []).map(link => ({
         link_name: link.link_name,
         Url: link.Url,
         shorten_code: link.shorten_code,
         short_url: `${import.meta.env.VITE_API_URL}/${link.shorten_code}`,
-        created_at: link.created_at
-            ? new Date(link.created_at).toLocaleString()
-            : "",
+        created_at: link.created_at ? new Date(link.created_at).toLocaleString() : "",
+        click_amount: link.click_amount,
+        browsers: link.browsers.join("; "),
+        from: link.from.join("; "),
+        countries: link.countries.join("; "),
+
     }));
 
 
