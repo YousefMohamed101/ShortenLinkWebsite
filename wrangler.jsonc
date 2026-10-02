@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "shertnlnk",
-  "main": "src/API/SupabaseAdapter.js",
+  "main": "src/API/D1_Adapter.js",
   "compatibility_date": "2024-09-23",
   "observability": {
     "enabled": true
@@ -14,5 +14,13 @@
     "VITE_SUPABASE_URL": "https://twpeblpilhycqrpfcfrl.supabase.co",
     "VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY": "sb_publishable_PWEJYilwSucdtIR0U-sF4w_O9eYg4Gc"
 
-  }
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB", // The name you will use in your code (env.DB)
+      "database_name": "shertnlink_db",
+      "database_id": "d7393512-d109-43ff-a398-8d253ddbd15c"
+    }
+  ]
 }
